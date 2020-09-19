@@ -1,0 +1,13 @@
+.ui_start {
+    position: absolute;
+    z-index: 3;
+    opacity: 0.6;
+    background: black;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+    color: white;
+}

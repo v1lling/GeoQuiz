@@ -1,0 +1,8 @@
+
+#ui_bottom {
+    width: calc(100% - 2rem);;
+    top: calc(100% - 220px);
+    left: calc(50% - 200px);
+    width: 400px;
+    justify-content: flex-end;
+}

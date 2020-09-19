@@ -7,7 +7,7 @@ import {Component} from 'react';
 import Map from '../Map/Map';
 import Score from '../Score/Score';
 import UI_Top from '../UI/Top/UI_Top'
-import {calculateDistance} from '../../libs/utils.js'
+import {calculateDistance, getDistanceColor} from '../../libs/utils.js'
 import UI_Start from '../UI/Start/UI_Start';
 
 var capitals = require("../../json/capitals.json");
@@ -56,12 +56,14 @@ class App extends Component {
    */
   evaluateGuess = () => {
     let distance = calculateDistance(this.state.currentGuess.lat, this.state.currentGuess.lng, this.state.currentCity.lat, this.state.currentCity.lng);
+    let distanceColor = getDistanceColor(distance);
     this.setState({
         currentScore: {
           time: "TBI",
           distance: distance,
           combo: "TBI"
-        }
+        },
+        distanceColor: distanceColor
     });
 
   };
@@ -84,14 +86,17 @@ class App extends Component {
    * event when map is clicked
    * @param {*} e 
    */
-  onClickMap = e => {
+  onClickMap = (e, callback) => {
     this.setState({
       showCurrentCity: true,
       currentGuess: {
         lat: e.lngLat[1], 
         lng: e.lngLat[0]
       }
-    }, this.evaluateGuess);
+    }, function () {
+      this.evaluateGuess();
+      callback();
+    });
   };
   
   /**
@@ -136,7 +141,12 @@ class App extends Component {
             <UI_Start onStart={this.onClickStart}/>
           )}
           <UI_Top city = {this.state.currentCity} onClickMenu={this.onClickMenu.bind(this)}/>
-          <Map showCity={this.state.showCurrentCity} city={this.state.currentCity} guess={this.state.currentGuess} onClick={this.onClickMap} />
+          <Map 
+            showCity={this.state.showCurrentCity}
+            city={this.state.currentCity}
+            guess={this.state.currentGuess}
+            distanceColor={this.state.distanceColor}
+            onClick={this.onClickMap} />
           <Score score={this.state.currentScore} onNext={this.onClickNext.bind(this)}/>
         </app>
       </Fragment>

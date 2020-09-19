@@ -1,7 +1,7 @@
 
-/* Calculate distance
-
-*/
+/**
+ * Calculate distance
+ */ 
 export let calculateDistance = function(lat1,lng1,lat2,lng2) {
 
     var R = 6371; // Radius of the earth in km
@@ -20,3 +20,31 @@ export let calculateDistance = function(lat1,lng1,lat2,lng2) {
         return deg * (Math.PI/180)
      }
 };
+
+/**
+ * Gets color for the distance line
+ * @param {distance in km} distance 
+ */
+// https://gist.github.com/mlocati/7210513
+export let getDistanceColor = function(distance) {
+    var max = 1500;
+    var perc = Math.trunc((distance/max) * 100);
+    console.log(100 - perc);
+    var percentage = perc > 100 ? 0 : 100 - perc;
+    return perc2color(percentage);
+
+    function perc2color(perc) {
+        var r, g, b = 0;
+        if(perc < 50) {
+            r = 255;
+            g = Math.round(5.1 * perc);
+        }
+        else {
+            g = 255;
+            r = Math.round(510 - 5.10 * perc);
+        }
+        var h = r * 0x10000 + g * 0x100 + b * 0x1;
+        return '#' + ('000000' + h.toString(16)).slice(-6);
+    }
+};
+ 
